@@ -34,5 +34,21 @@ namespace StringCalculatorTests
             var ex = Assert.ThrowsException<ArgumentException>(() => calculator.Calculate(input));
             Assert.AreEqual(expectedMessage, ex.Message);
         }
+
+        [DataTestMethod]
+        [DataRow("-1,2,3", 4)]
+        [DataRow("-1,-2,-3", -6)]
+        public void Calculate_AllowNegativeNumbers_CorrectResult(string input, int expectedSum)
+        {
+            var mockParser = new MockInputParser();
+            var calculator = new Calculator(mockParser)
+            {
+                AllowNegativeNumbers = true
+            };
+
+            var output = calculator.Calculate(input);
+
+            Assert.AreEqual(expectedSum, output.Result);
+        }
     }
 }

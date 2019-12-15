@@ -9,6 +9,9 @@ namespace StringCalculator
     class Calculator
     {
         private IInputParser _parser;
+
+        public bool AllowNegativeNumbers { get; set; } = false;
+
         public Calculator(IInputParser parser)
         {
             _parser = parser;
@@ -18,7 +21,8 @@ namespace StringCalculator
         {
             List<int> operands = _parser.Parse(input);
 
-            ThrowExceptionIfContainsNegativeNumber(operands);
+            if (!AllowNegativeNumbers)
+                ThrowExceptionIfContainsNegativeNumber(operands);
 
             var result = Add(operands);
 

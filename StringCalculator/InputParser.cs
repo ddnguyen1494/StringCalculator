@@ -9,12 +9,27 @@ namespace StringCalculator
 {
     class InputParser : IInputParser
     {
-        private List<string> _delimiters = new List<string> { ",", "\n" };
-        private string customDelimPattern = @"^//((?<singleChar>.)?(?=\n)|(\[(?<singleCustomLength>.*?)\])+)\n";
+        public const string DEFAULT_DELIMITER = "\n";
+
+        public const int DEFAULT_UPPERBOUND = 1000;
+
+        private const string CUSTOM_DELIM_PATTERN = @"^//((?<singleChar>.)?(?=\n)|(\[(?<singleCustomLength>.*?)\])+)\n";
+
+        private List<string> _delimiters = new List<string> { "," };
+
+        public int UpperBound { get; set; } = DEFAULT_UPPERBOUND;
 
         public InputParser()
         {
+            _delimiters.Add(DEFAULT_DELIMITER);
+        }
 
+        public InputParser(string alternateDelimiter = DEFAULT_DELIMITER)
+        {
+            if (!string.IsNullOrEmpty(alternateDelimiter))
+            {
+                _delimiters.Add(alternateDelimiter);
+            }
         }
 
         public List<int> Parse(string input)
@@ -28,7 +43,7 @@ namespace StringCalculator
 
         private void ParseAndRemoveCustomDelimiters(ref string input)
         {
-            Match match = Regex.Match(input, customDelimPattern, RegexOptions.Singleline);
+            Match match = Regex.Match(input, CUSTOM_DELIM_PATTERN, RegexOptions.Singleline);
 
             if (match.Success)
             {
@@ -73,7 +88,7 @@ namespace StringCalculator
                 int number;
                 if (int.TryParse(token, out number))
                 {
-                    if (number > 1000)
+                    if (number > UpperBound)
                     {
                         numbers.Add(0);
                     }

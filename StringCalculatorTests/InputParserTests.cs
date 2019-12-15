@@ -123,5 +123,35 @@ namespace StringCalculatorTests
 
             CollectionAssert.AreEquivalent(expectedNumbers, numbers);
         }
+
+        [DataTestMethod]
+        [DataRow("\t", "1\t2,3", new[] { 1, 2, 3 })]
+        [DataRow(";", "1;2;3", new[] { 1, 2, 3 })]
+        [DataRow("-", "-", new[] { 0, 0 })]
+        public void Parse_AlternateDelimiterParser_CorrectNumberList(string alternateDelim, 
+            string input, int[] expectedNumbers)
+        {
+            var parser = new InputParser(alternateDelim);
+
+            List<int> numbers = parser.Parse(input);
+
+            CollectionAssert.AreEquivalent(expectedNumbers, numbers);
+        }
+
+        [DataTestMethod]
+        [DataRow("1001,1001", 1002, new[] { 1001, 1001 })]
+        [DataRow("2,1001,6", 8, new[] { 2, 0, 6 })]
+        [DataRow("2,1001,6", 0, new[] { 0, 0, 0 })]
+        public void Parse_DifferentUpperbound_CorrectNumberList(string input, int upperBound, int[] expectedNumbers)
+        {
+            var parser = new InputParser()
+            {
+                UpperBound = upperBound
+            };
+
+            List<int> numbers = parser.Parse(input);
+
+            CollectionAssert.AreEquivalent(expectedNumbers, numbers);
+        }
     }
 }
