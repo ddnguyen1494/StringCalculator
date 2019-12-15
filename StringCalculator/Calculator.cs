@@ -8,6 +8,8 @@ namespace StringCalculator
 {
     class Calculator
     {
+        private string[] _delimiters = { ",", "\n" };
+
         public Calculator()
         {
                 
@@ -40,7 +42,7 @@ namespace StringCalculator
 
         private string[] Tokenize(string input)
         {
-            return input.Split(',');
+            return input.Split(_delimiters, StringSplitOptions.None);
         }
 
         private List<int> ConvertTokensToNumbers(string[] tokens)

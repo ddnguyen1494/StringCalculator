@@ -50,5 +50,18 @@ namespace StringCalculatorTests
 
             Assert.AreEqual(expectedSum, sum);
         }
+
+        [DataTestMethod]
+        [DataRow("1\n2,3", 6)]
+        [DataRow("1\n2\n3", 6)]
+        [DataRow("\n", 0)]
+        public void Calculate_InputWithNewlineDelimiter_CorrectSum(string input, int expectedSum)
+        {
+            var calculator = new Calculator();
+
+            int sum = calculator.Calculate(input);
+
+            Assert.AreEqual(expectedSum, sum);
+        }
     }
 }
