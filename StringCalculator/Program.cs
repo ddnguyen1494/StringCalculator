@@ -10,26 +10,24 @@ namespace StringCalculator
     {
         static void Main(string[] args)
         {
-            Console.Write("Enter string: ");
-            string input = Console.ReadLine();
-
             IInputParser parser = new InputParser();
             var calculator = new Calculator(parser);
 
-            try
+            do
             {
-                CalculatorOutput output = calculator.Calculate(input);
+                Console.Write("Enter string: ");
+                string input = Console.ReadLine();
+                try
+                {
+                    CalculatorOutput output = calculator.Calculate(input);
 
-                Console.WriteLine(CreateFormulaForDisplay(output));
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                Console.ReadLine();
-            }
+                    Console.WriteLine(CreateFormulaForDisplay(output));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            } while (true);
         }
 
         static string CreateFormulaForDisplay(CalculatorOutput output)
