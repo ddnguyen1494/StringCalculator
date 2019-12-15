@@ -18,9 +18,9 @@ namespace StringCalculator
 
             try
             {
-                int result = calculator.Calculate(input);
+                CalculatorOutput output = calculator.Calculate(input);
 
-                Console.WriteLine($"Result: {result}");
+                Console.WriteLine(CreateFormulaForDisplay(output));
             }
             catch(Exception ex)
             {
@@ -30,6 +30,25 @@ namespace StringCalculator
             {
                 Console.ReadLine();
             }
+        }
+
+        static string CreateFormulaForDisplay(CalculatorOutput output)
+        {
+            StringBuilder builder = new StringBuilder();
+
+            List<int> operands = output.Operands;
+
+            for (int i = 0; i < operands.Count; i++)
+            {
+                builder.Append(operands[i]);
+
+                if (i != operands.Count - 1)
+                    builder.Append("+");
+            }
+
+            builder.Append($"={output.Result}");
+
+            return builder.ToString();
         }
     }
 }

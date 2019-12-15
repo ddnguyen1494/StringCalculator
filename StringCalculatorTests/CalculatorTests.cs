@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StringCalculator;
 
@@ -17,9 +18,9 @@ namespace StringCalculatorTests
             var mockParser = new MockInputParser();
             var calculator = new Calculator(mockParser);
 
-            int sum = calculator.Calculate(input);
+            var output = calculator.Calculate(input);
 
-            Assert.AreEqual(expectedSum, sum);
+            Assert.AreEqual(expectedSum, output.Result);
         }
 
         [DataTestMethod]

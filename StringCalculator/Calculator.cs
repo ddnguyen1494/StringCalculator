@@ -14,13 +14,15 @@ namespace StringCalculator
             _parser = parser;
         }
 
-        public int Calculate(string input)
+        public CalculatorOutput Calculate(string input)
         {
             List<int> operands = _parser.Parse(input);
 
             ThrowExceptionIfContainsNegativeNumber(operands);
 
-            return Add(operands);
+            var result = Add(operands);
+
+            return new CalculatorOutput(operands, result);
         }
 
         private int Add(List<int> operands)
