@@ -10,7 +10,7 @@ namespace StringCalculator
     class InputParser : IInputParser
     {
         private List<string> _delimiters = new List<string> { ",", "\n" };
-        private string customDelimPattern = @"^//((?<singleChar>.)?(?=\n)|\[(?<singleCustomLength>.+)?\])\n";
+        private string customDelimPattern = @"^//((?<singleChar>.)?(?=\n)|(\[(?<singleCustomLength>.*?)\])+)\n";
 
         public InputParser()
         {
@@ -31,13 +31,35 @@ namespace StringCalculator
             Match match = Regex.Match(input, customDelimPattern, RegexOptions.Singleline);
             if (match.Success)
             {
+                System.Diagnostics.Debug.WriteLine("Match: '{0}'", match.Value);
+                for (int ctr = 0; ctr < match.Groups.Count; ctr++)
+                {
+                    System.Diagnostics.Debug.WriteLine("   Group {0}: '{1}'", ctr, match.Groups[ctr].Value);
+                    int capCtr = 0;
+                    foreach (Capture capture in match.Groups[ctr].Captures)
+                    {
+                        System.Diagnostics.Debug.WriteLine("      Capture {0}: '{1}'", capCtr, capture.Value);
+                        capCtr++;
+                    }
+                }
+
                 if (!string.IsNullOrWhiteSpace(match.Groups["singleChar"].Value))
                 {
                     _delimiters.Add(match.Groups["singleChar"].Value);
                 }
-                else if (!string.IsNullOrWhiteSpace(match.Groups["singleCustomLength"].Value))
+                else if (match.Groups["singleCustomLength"].Captures.Count > 0)
                 {
-                    _delimiters.Add(match.Groups["singleCustomLength"].Value);
+                    foreach (var capture in match.Groups["singleCustomLength"].Captures)
+                    {
+                        if (!string.IsNullOrWhiteSpace(capture.ToString()))
+                        {
+                            _delimiters.Add(capture.ToString());
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Missing custom delimiter");
+                        }
+                    }
                 }
                 else
                 {

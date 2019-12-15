@@ -104,11 +104,24 @@ namespace StringCalculatorTests
         [DataTestMethod]
         [DataRow("//[]\n11***22***33")]
         [DataRow("//\n2#5")]
+        [DataRow("//[][!!][r9r]\n11r9r22*hh*33!!44")]
         public void Parse_InputMissingCustomDelimiter_ArgumentExceptionThrown(string input)
         {
             var parser = new InputParser();
 
             var ex = Assert.ThrowsException<ArgumentException>(() => parser.Parse(input));
+        }
+
+        [DataTestMethod]
+        [DataRow("//[*][!!][r9r]\n11r9r22*hh*33!!44", new[] { 11, 22, 0, 33, 44 })]
+        [DataRow("//[[]][[][//]\n11//22[]hh[]33[44", new[] { 11, 22, 0, 33, 44 })]
+        public void Parse_InputWithMultipleCustomDelimiters_CorrectNumberList(string input, int[] expectedNumbers)
+        {
+            var parser = new InputParser();
+
+            List<int> numbers = parser.Parse(input);
+
+            CollectionAssert.AreEquivalent(expectedNumbers, numbers);
         }
     }
 }
