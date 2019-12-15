@@ -22,14 +22,17 @@ namespace StringCalculatorTests
         }
 
         [DataTestMethod]
-        [DataRow("1,2,5")]
-        [DataRow("1,2,abc")]
-        [DataRow("a,b,c")]
-        public void Calculate_InputWithMoreThanTwoNumbers_ArgumentExceptionThrown(string input)
+        [DataRow("1,2,5", 8)]
+        [DataRow("1,2,abc", 3)]
+        [DataRow("a,b,c", 0)]
+        [DataRow("1,2,3,4,5,6,7,8,9,10,11,12", 78)]
+        public void Calculate_InputWithMoreThanTwoNumbers_CorrectSum(string input, int expectedSum)
         {
             var calculator = new Calculator();
 
-            Assert.ThrowsException<ArgumentException>(() => calculator.Calculate(input));
+            int sum = calculator.Calculate(input);
+
+            Assert.AreEqual(expectedSum, sum);
         }
 
         [DataTestMethod]

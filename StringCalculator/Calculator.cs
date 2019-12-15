@@ -35,11 +35,6 @@ namespace StringCalculator
         {
             string[] tokens = Tokenize(input);
 
-            if (tokens.Length > 2)
-            {
-                throw new ArgumentException("Invalid number of operands. Maximum: 2");
-            }
-
             return ConvertTokensToNumbers(tokens);
         }
 
