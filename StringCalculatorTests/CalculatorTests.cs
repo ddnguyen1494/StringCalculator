@@ -9,8 +9,8 @@ namespace StringCalculatorTests
     {
         [DataTestMethod]
         [DataRow("1,5000", 5001)]
-        [DataRow("4,-3", 1)]
-        [DataRow("0,-1", -1)]
+        [DataRow("4,3", 7)]
+        [DataRow("0,1", 1)]
         [DataRow("1000,2000", 3000)]
         public void Calculate_InputWithTwoNumbers_CorrectSum(string input, int expectedSum)
         {
@@ -62,6 +62,17 @@ namespace StringCalculatorTests
             int sum = calculator.Calculate(input);
 
             Assert.AreEqual(expectedSum, sum);
+        }
+
+        [DataTestMethod]
+        [DataRow("-1,2,3", "Invalid negative numbers: -1")]
+        [DataRow("-1,-2,-3", "Invalid negative numbers: -1 -2 -3")]
+        public void Calculate_InputWithNegativeNumbers_ExceptionThrownWithCorrectMessage(string input, string expectedMessage)
+        {
+            var calculator = new Calculator();
+
+            var ex = Assert.ThrowsException<ArgumentException>(() => calculator.Calculate(input));
+            Assert.AreEqual(expectedMessage, ex.Message);
         }
     }
 }

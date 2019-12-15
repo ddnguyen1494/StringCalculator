@@ -19,6 +19,8 @@ namespace StringCalculator
         {
             List<int> operands = Parse(input);
 
+            ThrowExceptionIfContainsNegativeNumber(operands);
+
             return Add(operands);
         }
 
@@ -33,11 +35,29 @@ namespace StringCalculator
 
             return sum;
         }
+
         private List<int> Parse(string input)
         {
             string[] tokens = Tokenize(input);
 
             return ConvertTokensToNumbers(tokens);
+        }
+
+        private void ThrowExceptionIfContainsNegativeNumber(List<int> numbers)
+        {
+            var negativeNumbers = numbers.Where(number => number < 0);
+
+            if (negativeNumbers.Any())
+            {
+                StringBuilder builder = new StringBuilder("Invalid negative numbers:");
+
+                foreach(int number in negativeNumbers)
+                {
+                    builder.Append(" " + number);
+                }
+
+                throw new ArgumentException(builder.ToString());
+            }
         }
 
         private string[] Tokenize(string input)
