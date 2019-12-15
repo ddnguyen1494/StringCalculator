@@ -29,20 +29,9 @@ namespace StringCalculator
         private void ParseAndRemoveCustomDelimiters(ref string input)
         {
             Match match = Regex.Match(input, customDelimPattern, RegexOptions.Singleline);
+
             if (match.Success)
             {
-                System.Diagnostics.Debug.WriteLine("Match: '{0}'", match.Value);
-                for (int ctr = 0; ctr < match.Groups.Count; ctr++)
-                {
-                    System.Diagnostics.Debug.WriteLine("   Group {0}: '{1}'", ctr, match.Groups[ctr].Value);
-                    int capCtr = 0;
-                    foreach (Capture capture in match.Groups[ctr].Captures)
-                    {
-                        System.Diagnostics.Debug.WriteLine("      Capture {0}: '{1}'", capCtr, capture.Value);
-                        capCtr++;
-                    }
-                }
-
                 if (!string.IsNullOrWhiteSpace(match.Groups["singleChar"].Value))
                 {
                     _delimiters.Add(match.Groups["singleChar"].Value);
@@ -65,6 +54,7 @@ namespace StringCalculator
                 {
                     throw new ArgumentException("Missing custom delimiter");
                 }
+
                 input = input.Replace(match.Value, "");
             }
         }
