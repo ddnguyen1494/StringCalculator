@@ -87,5 +87,28 @@ namespace StringCalculatorTests
 
             CollectionAssert.AreEquivalent(expectedNumbers, numbers);
         }
+
+        [DataTestMethod]
+        [DataRow("//[***]\n11***22***33", new[] { 11, 22, 33 })]
+        [DataRow("//[[]]\n11[]22[]33", new[] { 11, 22, 33 })]
+        [DataRow("//[//]\n11//22//33", new[] { 11, 22, 33 })]
+        public void Parse_InputWithOneCustomLengthDelimiter_CorrectNumberList(string input, int[] expectedNumbers)
+        {
+            var parser = new InputParser();
+
+            List<int> numbers = parser.Parse(input);
+
+            CollectionAssert.AreEquivalent(expectedNumbers, numbers);
+        }
+
+        [DataTestMethod]
+        [DataRow("//[]\n11***22***33")]
+        [DataRow("//\n2#5")]
+        public void Parse_InputMissingCustomDelimiter_ArgumentExceptionThrown(string input)
+        {
+            var parser = new InputParser();
+
+            var ex = Assert.ThrowsException<ArgumentException>(() => parser.Parse(input));
+        }
     }
 }

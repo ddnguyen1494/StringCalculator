@@ -10,7 +10,7 @@ namespace StringCalculator
     class InputParser : IInputParser
     {
         private List<string> _delimiters = new List<string> { ",", "\n" };
-        private string singleCharDelimPattern = @"//(.)\n";
+        private string customDelimPattern = @"^//((?<singleChar>.)?(?=\n)|\[(?<singleCustomLength>.+)?\])\n";
 
         public InputParser()
         {
@@ -28,15 +28,24 @@ namespace StringCalculator
 
         private void ParseAndRemoveCustomDelimiters(ref string input)
         {
-            Match m = Regex.Match(input, singleCharDelimPattern, RegexOptions.Singleline);
-            if (m.Success)
+            Match match = Regex.Match(input, customDelimPattern, RegexOptions.Singleline);
+            if (match.Success)
             {
-                string delimiter = m.Groups[1].Value;
-                _delimiters.Add(delimiter);
-                input = Regex.Replace(input, singleCharDelimPattern, "");
+                if (!string.IsNullOrWhiteSpace(match.Groups["singleChar"].Value))
+                {
+                    _delimiters.Add(match.Groups["singleChar"].Value);
+                }
+                else if (!string.IsNullOrWhiteSpace(match.Groups["singleCustomLength"].Value))
+                {
+                    _delimiters.Add(match.Groups["singleCustomLength"].Value);
+                }
+                else
+                {
+                    throw new ArgumentException("Missing custom delimiter");
+                }
+                input = input.Replace(match.Value, "");
             }
         }
-
 
         private string[] Tokenize(string input)
         {
