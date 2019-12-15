@@ -74,7 +74,14 @@ namespace StringCalculator
                 int number;
                 if (int.TryParse(token, out number))
                 {
-                    numbers.Add(number);
+                    if (number > 1000)
+                    {
+                        numbers.Add(0);
+                    }
+                    else
+                    {
+                        numbers.Add(number);
+                    }
                 }
                 else
                 {

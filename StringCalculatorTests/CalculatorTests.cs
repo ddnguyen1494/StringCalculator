@@ -8,10 +8,9 @@ namespace StringCalculatorTests
     public class CalculatorTests
     {
         [DataTestMethod]
-        [DataRow("1,5000", 5001)]
         [DataRow("4,3", 7)]
         [DataRow("0,1", 1)]
-        [DataRow("1000,2000", 3000)]
+        [DataRow("1000,1000", 2000)]
         public void Calculate_InputWithTwoNumbers_CorrectSum(string input, int expectedSum)
         {
             var calculator = new Calculator();
@@ -73,6 +72,18 @@ namespace StringCalculatorTests
 
             var ex = Assert.ThrowsException<ArgumentException>(() => calculator.Calculate(input));
             Assert.AreEqual(expectedMessage, ex.Message);
+        }
+
+        [DataTestMethod]
+        [DataRow("1001,1001", 0)]
+        [DataRow("2,1001,6", 8)]
+        public void Calculate_InputWithNumberGreaterThan1000_CorrectSum(string input, int expectedSum)
+        {
+            var calculator = new Calculator();
+
+            int sum = calculator.Calculate(input);
+
+            Assert.AreEqual(expectedSum, sum);
         }
     }
 }
