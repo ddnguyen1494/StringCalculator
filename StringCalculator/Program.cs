@@ -13,7 +13,8 @@ namespace StringCalculator
             Console.Write("Enter string: ");
             string input = Console.ReadLine();
 
-            var calculator = new Calculator();
+            IInputParser parser = new InputParser();
+            var calculator = new Calculator(parser);
 
             try
             {

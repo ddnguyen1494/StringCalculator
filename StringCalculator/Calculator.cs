@@ -8,16 +8,15 @@ namespace StringCalculator
 {
     class Calculator
     {
-        private string[] _delimiters = { ",", "\n" };
-
-        public Calculator()
+        private IInputParser _parser;
+        public Calculator(IInputParser parser)
         {
-                
+            _parser = parser;
         }
 
         public int Calculate(string input)
         {
-            List<int> operands = Parse(input);
+            List<int> operands = _parser.Parse(input);
 
             ThrowExceptionIfContainsNegativeNumber(operands);
 
@@ -36,13 +35,6 @@ namespace StringCalculator
             return sum;
         }
 
-        private List<int> Parse(string input)
-        {
-            string[] tokens = Tokenize(input);
-
-            return ConvertTokensToNumbers(tokens);
-        }
-
         private void ThrowExceptionIfContainsNegativeNumber(List<int> numbers)
         {
             var negativeNumbers = numbers.Where(number => number < 0);
@@ -51,45 +43,13 @@ namespace StringCalculator
             {
                 StringBuilder builder = new StringBuilder("Invalid negative numbers:");
 
-                foreach(int number in negativeNumbers)
+                foreach (int number in negativeNumbers)
                 {
                     builder.Append(" " + number);
                 }
 
                 throw new ArgumentException(builder.ToString());
             }
-        }
-
-        private string[] Tokenize(string input)
-        {
-            return input.Split(_delimiters, StringSplitOptions.None);
-        }
-
-        private List<int> ConvertTokensToNumbers(string[] tokens)
-        {
-            List<int> numbers = new List<int>();
-
-            foreach(string token in tokens)
-            {
-                int number;
-                if (int.TryParse(token, out number))
-                {
-                    if (number > 1000)
-                    {
-                        numbers.Add(0);
-                    }
-                    else
-                    {
-                        numbers.Add(number);
-                    }
-                }
-                else
-                {
-                    numbers.Add(0);
-                }
-            }
-
-            return numbers;
         }
     }
 }

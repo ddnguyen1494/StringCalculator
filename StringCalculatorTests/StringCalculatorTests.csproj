@@ -50,7 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculatorTests.cs" />
+    <Compile Include="MockInputParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="InputParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
