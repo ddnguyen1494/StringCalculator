@@ -8,12 +8,16 @@ namespace StringCalculator
 {
     class CalculatorOutput
     {
-        public CalculatorOutput(List<int> operands, int result)
+        public List<int> Operands { get; }
+        public string Operator { get; }
+        public double Result { get; }
+
+        public CalculatorOutput(List<int> operands, double result, string oper)
         {
             Operands = operands;
+            Operator = oper;
             Result = result;
         }
-        public List<int> Operands { get; set; }
-        public int Result { get; set; }
+
     }
 }

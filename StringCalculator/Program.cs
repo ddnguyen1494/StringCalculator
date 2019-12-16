@@ -14,11 +14,14 @@ namespace StringCalculator
 
             do
             {
+                Console.Write("Enter operator (*,/,+,-): ");
+                string oper = Console.ReadLine();
+
                 Console.Write("Enter string: ");
                 string input = Console.ReadLine();
                 try
                 {
-                    CalculatorOutput output = calculator.Calculate(input);
+                    CalculatorOutput output = calculator.Calculate(input, oper);
 
                     Console.WriteLine(CreateFormulaForDisplay(output));
                 }
@@ -80,7 +83,7 @@ namespace StringCalculator
                 builder.Append(operands[i]);
 
                 if (i != operands.Count - 1)
-                    builder.Append("+");
+                    builder.Append(output.Operator);
             }
 
             builder.Append($"={output.Result}");
